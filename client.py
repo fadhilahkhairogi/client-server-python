@@ -1,5 +1,6 @@
 import socket
 import sys
+#ini komen
 
 def parse_input():
     try:
