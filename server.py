@@ -1,9 +1,7 @@
 import socket
 import sys
-import threading
 import time
 
-clientCount = 0
 
 def handle_client(connectionSocket):
     global clientCount
@@ -12,8 +10,7 @@ def handle_client(connectionSocket):
         request = connectionSocket.recv(4096).decode()
         file = request.split()[1]
         file = file.lstrip('/')
-        clientCount = clientCount + 1
-        print(f'Processing Client {clientCount} request\nfile: {file}')
+        print(f'Processing Client request\nfile: {file}')
         
         with open(file, 'r', encoding='utf-8') as f:
             output = f.read().encode()
