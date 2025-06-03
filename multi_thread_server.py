@@ -47,7 +47,8 @@ def start_server():
     print(f'Server is running on port {Port}')
     while True:
         connectionSocket, addr = serverSocket.accept()
-        handle_client(connectionSocket)
+        client_thread = threading.Thread(target=handle_client, args=(connectionSocket,))
+        client_thread.start()
 
     serverSocket.close()
     sys.exit()

@@ -1,6 +1,7 @@
 import socket
 import sys
 #ini komen
+#
 
 def parse_input():
     try:
@@ -18,9 +19,9 @@ def start_client():
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         server_host,server_port,filename =  parse_input()
         server_address = (server_host, server_port)
-        print("Menghubungkan ke server...")
+        print("Connecting to server...")
         client_socket.connect(server_address)
-
+        print("Connected to server")
         request = f"GET {filename} HTTP/1.1\r\nHost: {server_host}\r\n\r\n"
         client_socket.send(request.encode())
 
@@ -34,7 +35,9 @@ def start_client():
 
         print(response)
         client_socket.close()
-
+    
+    except Exception as e:
+        print(f"Error: {e}")
 
     finally:
         client_socket.close()
