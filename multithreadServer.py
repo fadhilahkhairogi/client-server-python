@@ -3,12 +3,12 @@ import sys
 import threading
 import time
 
-def handle_client(connectionSocket):
+def handle_client(connectionSocket, addr):
     try:
-
+        print("Client requsest on",addr)
         request = connectionSocket.recv(4096).decode()
         file = request.split()[1]
-        file = file.lstrip('/')
+        file = file.lstrip('/') # file =file[1:]
         print(f'Processing Client request\nfile: {file}')
         
         with open(file, 'r', encoding='utf-8') as f:
@@ -28,8 +28,6 @@ def handle_client(connectionSocket):
     finally:
         connectionSocket.sendall(response)
         connectionSocket.close()
-        
-        
 
 
 
@@ -43,8 +41,9 @@ def start_server():
     print(f'Server is running on port {Port}')
     while True:
         connectionSocket, addr = serverSocket.accept()
-        client_thread = threading.Thread(target=handle_client, args=(connectionSocket,))
+        client_thread = threading.Thread(target=handle_client, args=(connectionSocket, addr,))
         client_thread.start()
+        
 
     serverSocket.close()
     sys.exit()

@@ -3,12 +3,13 @@ import sys
 import time
 
 
-def handle_client(connectionSocket):
-    global clientCount
-    try:
+def handle_client(connectionSocket, addr):
 
+    try:
+        print("Client requsest on",addr)
         request = connectionSocket.recv(4096).decode()
         file = request.split()[1]
+        
         file = file.lstrip('/')
         print(f'Processing Client request\nfile: {file}')
         
@@ -20,7 +21,7 @@ def handle_client(connectionSocket):
         response = b"HTTP/1.1 200 OK\r\n\r\n" + output
         
     except IOError:
-        response = b"HTTP/1.1 404 Not Found\r\n\r\nFile Not Found\n404 Not Found"
+        response = b"HTTP/1.1 404 Not Found\r\n\r\nFile Not Found\n404 Not Found" 
     
     except Exception as e:
         print(f"Error: {e}")
@@ -44,7 +45,8 @@ def start_server():
     print(f'Server is running on port {Port}')
     while True:
         connectionSocket, addr = serverSocket.accept()
-        handle_client(connectionSocket)
+        handle_client(connectionSocket, addr)
+        # connectionSocket.close()
 
     serverSocket.close()
     sys.exit()
